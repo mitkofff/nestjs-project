@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from "@nestjs/common";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { HeroServece } from "./hero.service";
 
 @Controller("hero")
@@ -10,8 +10,15 @@ export class HeroController {
 		return this.heroService.getAllHeroes();
 	}
 
-	@Get("universe")
+	@Get("filters")
+	getFilteredHeroes(@Query() params) {
+		return this.heroService.getFilteredHeroes(params);
+	}
+
+	@Get(":universe")
 	getHeroesByUniverse(@Param("universe") universe: string) {
-		return this.heroService.getHeroesByUniverse(universe);
+		return this.heroService.getHeroesByUniverse(
+			universe.toLocaleLowerCase(),
+		);
 	}
 }

@@ -1,9 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { Hero } from "./hero.module";
+import { Hero } from "./hero.model";
 
 const db = {
 	marvelHeroes: [
-		{ name: "Spiderman", powers: ["net"], universe: "Marvel" },
+		{ name: "Spiderman", powers: ["net", "strong"], universe: "Marvel" },
 		{
 			name: "Captain America",
 			powers: ["fly", "strong"],
@@ -27,6 +27,26 @@ export class HeroServece {
 		const heroes = [...db.marvelHeroes, ...db.dcHeroes].filter(
 			(hero) => hero.universe.toLocaleLowerCase() === universe,
 		);
+
+		return heroes;
+	}
+
+	getFilteredHeroes(filters): Hero[] {
+		const heroes = [...db.marvelHeroes, ...db.dcHeroes].filter((hero) => {
+			return Object.keys(filters).every((key) => {
+				if (Array.isArray(hero[key])) {
+					const currentFilterArray = filters[key].split(",");
+
+					return hero[key]
+						.map((element) => element.toLocaleLowerCase())
+						.some((element) =>
+							currentFilterArray.includes(element),
+						);
+				}
+
+				return filters[key] === hero[key];
+			});
+		});
 
 		return heroes;
 	}
