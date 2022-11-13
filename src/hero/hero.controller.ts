@@ -15,10 +15,8 @@ export class HeroController {
 		return this.heroService.getFilteredHeroes(params);
 	}
 
-	@Get(":universe")
-	getHeroesByUniverse(@Param("universe") universe: string) {
-		return this.heroService.getHeroesByUniverse(
-			universe.toLocaleLowerCase(),
-		);
+	@Get(":id")
+	getHeroeById(@Param("id") id: number) {
+		return this.heroService.getHeroesById(+id);
 	}
 }
