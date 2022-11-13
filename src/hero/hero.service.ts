@@ -39,7 +39,11 @@ export class HeroServece {
 		return heroes;
 	}
 
-	getHeroesById(id: number): Hero {
+	getHeroesById(id: number): Hero | string {
+		if (!+id) {
+			return "Invalid id type. It should be number!";
+		}
+
 		const hero = [...db.marvelHeroes, ...db.dcHeroes].find(
 			(hero) => hero.id === +id,
 		);
